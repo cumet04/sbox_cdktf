@@ -1,9 +1,6 @@
 import { Construct } from "constructs";
-import { App, TerraformStack, S3Backend } from "cdktf";
+import { App, TerraformStack } from "cdktf";
 import * as aws from '@cdktf/provider-aws';
-
-import { createVpc } from './vpc'
-import { createSubnets } from "./subnets";
 
 class MyStack extends TerraformStack {
   constructor(scope: Construct, name: string) {
@@ -12,15 +9,6 @@ class MyStack extends TerraformStack {
     new aws.AwsProvider(this, "AWS", {
       region: "ap-northeast-1",
     });
-
-    new S3Backend(this, {
-      bucket: process.env.BACKEND_BUCKET!,
-      key: "sbox_cdktf.terraform.tfstate",
-      region: "ap-northeast-1",
-    });
-
-    const { vpc } = createVpc(this)
-    createSubnets(this, vpc.id)
   }
 }
 
