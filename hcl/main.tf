@@ -12,7 +12,3 @@ terraform {
     region = "ap-northeast-1"
   }
 }
-
-module "cdktf" {
-  source = "./modules/cdktf"
-}
