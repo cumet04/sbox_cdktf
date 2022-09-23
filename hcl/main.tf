@@ -18,5 +18,5 @@ module "cdktf" {
 }
 
 locals {
-  aws_vpc_vpc_id = module.cdktf.vpc_id
+  aws_vpc_vpc_id = aws_vpc.vpc.id
 }
