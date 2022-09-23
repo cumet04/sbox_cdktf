@@ -16,3 +16,7 @@ terraform {
 module "cdktf" {
   source = "./modules/cdktf"
 }
+
+locals {
+  aws_vpc_vpc_id = module.cdktf.vpc_id
+}
