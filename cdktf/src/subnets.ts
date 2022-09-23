@@ -10,7 +10,6 @@ export function createSubnets(scope: Construct, vpcId: string): {} {
     });
   subnet('snPublic1', 'ap-northeast-1a', '10.0.0.0/24');
   subnet('snPublic2', 'ap-northeast-1c', '10.0.1.0/24');
-  subnet('snPrivate1', 'ap-northeast-1a', '10.0.2.0/24');
   subnet('snPrivate2', 'ap-northeast-1c', '10.0.3.0/24');
 
   return {}

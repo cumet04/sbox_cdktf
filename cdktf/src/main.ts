@@ -1,5 +1,5 @@
 import { Construct } from "constructs";
-import { App, TerraformStack } from "cdktf";
+import { App, TerraformOutput, TerraformStack } from "cdktf";
 import * as aws from '@cdktf/provider-aws';
 
 import { createVpc } from './vpc'
@@ -15,6 +15,8 @@ class MyStack extends TerraformStack {
 
     const { vpc } = createVpc(this)
     createSubnets(this, vpc.id)
+
+    new TerraformOutput(this, "vpc_id", { value: vpc.id })
   }
 }
 
