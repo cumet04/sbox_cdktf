@@ -3,7 +3,6 @@ import { App, TerraformOutput, TerraformStack } from "cdktf";
 import * as aws from '@cdktf/provider-aws';
 
 import { createVpc } from './vpc'
-import { createSubnets } from "./subnets";
 
 class MyStack extends TerraformStack {
   constructor(scope: Construct, name: string) {
@@ -14,7 +13,6 @@ class MyStack extends TerraformStack {
     });
 
     const { vpc } = createVpc(this)
-    createSubnets(this, vpc.id)
 
     new TerraformOutput(this, "vpc_id", { value: vpc.id })
   }
