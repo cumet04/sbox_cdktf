@@ -4,6 +4,7 @@ import * as aws from '@cdktf/provider-aws';
 
 import { createVpc } from './vpc'
 import { createSubnets } from "./subnets";
+import { createRoutes } from "./routes";
 
 class MyStack extends TerraformStack {
   constructor(scope: Construct, name: string) {
@@ -20,7 +21,8 @@ class MyStack extends TerraformStack {
     });
 
     const { vpc } = createVpc(this)
-    createSubnets(this, vpc.id)
+    const { publicSubnets } = createSubnets(this, vpc.id)
+    createRoutes(this, vpc.id, publicSubnets.map(s => s.id))
   }
 }
 
