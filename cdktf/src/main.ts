@@ -19,6 +19,11 @@ class MyStack extends TerraformStack {
     });
 
     new Hcl(this, 'hcl', {});
+
+    new aws.vpc.Vpc(this, "vpc", {
+      cidrBlock: "10.0.0.0/16",
+    });
+
   }
 }
 
