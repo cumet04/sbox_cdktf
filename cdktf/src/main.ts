@@ -12,6 +12,11 @@ class MyStack extends TerraformStack {
 
     new aws.AwsProvider(this, "AWS", {
       region: "ap-northeast-1",
+      defaultTags: {
+        tags: {
+          project: "sbox_cdktf"
+        }
+      }
     });
 
     new S3Backend(this, {
