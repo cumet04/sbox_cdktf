@@ -1,10 +1,11 @@
 import { Construct } from "constructs";
-import { App, TerraformStack, S3Backend } from "cdktf";
+import { App, TerraformStack, S3Backend, TerraformVariable } from "cdktf";
 import * as aws from '@cdktf/provider-aws';
 
 import { createVpc } from './vpc'
 import { createSubnets } from "./subnets";
 import { createRoutes } from "./routes";
+import { createIam } from "./iam";
 
 class MyStack extends TerraformStack {
   constructor(scope: Construct, name: string) {
@@ -24,6 +25,9 @@ class MyStack extends TerraformStack {
       key: "sbox_cdktf.terraform.tfstate",
       region: "ap-northeast-1",
     });
+
+    const awsAccountId = new TerraformVariable(this, "awsAccountId", { type: "string" })
+    createIam(this, awsAccountId.stringValue)
 
     const { vpc } = createVpc(this)
     const { publicSubnets } = createSubnets(this, vpc.id)
