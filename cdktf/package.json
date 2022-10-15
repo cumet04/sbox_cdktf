@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "license": "MIT",
   "private": true,
-  "scripts": {},
+  "scripts": {
+    "synth": "cdktf synth",
+    "typecheck": "tsc --noEmit"
+  },
   "dependencies": {
     "@cdktf/provider-aws": "^9.0.38",
     "cdktf": "^0.12.2",
