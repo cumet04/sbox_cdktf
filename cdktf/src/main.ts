@@ -20,14 +20,16 @@ class MyStack extends TerraformStack {
       }
     });
 
-    new S3Backend(this, {
+    const backendAttrs = {
       bucket: process.env.BACKEND_BUCKET!,
       key: "sbox_cdktf.terraform.tfstate",
       region: "ap-northeast-1",
-    });
+    }
+    new S3Backend(this, backendAttrs)
+    const backendArn = `arn:aws:s3:::${backendAttrs.bucket}/${backendAttrs.key}`
 
-    const awsAccountId = new TerraformVariable(this, "awsAccountId", { type: "string" })
-    createIam(this, awsAccountId.stringValue)
+    const awsAccountId = new TerraformVariable(this, "awsAccountId", { type: "string" }).stringValue
+    createIam(this, awsAccountId, backendArn)
 
     const { vpc } = createVpc(this)
     const { publicSubnets } = createSubnets(this, vpc.id)

@@ -1,7 +1,7 @@
 import { Construct } from "constructs";
 import * as aws from '@cdktf/provider-aws';
 
-export function createIam(scope: Construct, awsAccountId: string): {} {
+export function createIam(scope: Construct, awsAccountId: string, tfstateBackendBucket: string): {} {
   new aws.iam.IamRole(scope, "IamRole.terraformAction", {
     name: "terraformAction",
     assumeRolePolicy: new aws.iam.DataAwsIamPolicyDocument(scope, "DataAwsIamPolicyDocument.terraformAction", {
@@ -23,17 +23,32 @@ export function createIam(scope: Construct, awsAccountId: string): {} {
               values: ["repo:cumet04/sbox_cdktf:*"]
             }
           ]
+        },
+        {
+          // ローカルでの権限の動作検証用に各種ユーザからのswitch roleも許可
+          effect: 'Allow',
+          principals: [
+            {
+              type: "AWS",
+              identifiers: [`arn:aws:iam::${awsAccountId}:root`]
+            }
+          ],
+          actions: ["sts:AssumeRole"],
         }
       ],
     }).json,
     inlinePolicy: [
       {
-        policy: new aws.iam.DataAwsIamPolicyDocument(scope, "DataAwsIamPolicyDocument.policy1", {
+        name: "AllowRefreshTfState",
+        policy: new aws.iam.DataAwsIamPolicyDocument(scope, "DataAwsIamPolicyDocument.AllowRefreshTfState", {
           statement: [
             {
+              effect: "Allow",
               actions: [
-                // TODO
-              ]
+                "s3:GetObject",
+                "s3:PutObject",
+              ],
+              resources: [tfstateBackendBucket]
             }
           ]
         }).json
