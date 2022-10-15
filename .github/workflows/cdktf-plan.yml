@@ -36,3 +36,6 @@ jobs:
           stackName: cdktf
           mode: plan-only
           githubToken: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          BACKEND_BUCKET: ${{ secrets.TF_STATE_BACKEND_BUCKET }}
+          TF_VAR_awsAccountId: ${{ secrets.AWS_ACCOUNT }}
