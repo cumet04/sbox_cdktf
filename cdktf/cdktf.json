@@ -4,7 +4,12 @@
   "projectId": "273cf2af-289b-40fa-b831-58e859e9ed8e",
   "sendCrashReports": "false",
   "terraformProviders": [],
-  "terraformModules": [],
+  "terraformModules": [
+    {
+      "name": "hcl",
+      "source": "../hcl"
+    }
+  ],
   "context": {
     "excludeStackIdFromLogicalIds": "true",
     "allowSepCharsInLogicalIds": "true"
