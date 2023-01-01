@@ -1,0 +1,3 @@
+.terraform
+.terraform.lock.hcl
+modules/cdktf/cdk.tf.json

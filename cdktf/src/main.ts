@@ -1,5 +1,5 @@
 import { Construct } from "constructs";
-import { App, TerraformStack, S3Backend } from "cdktf";
+import { App, TerraformOutput, TerraformVariable, TerraformStack, Fn } from "cdktf";
 import * as aws from '@cdktf/provider-aws';
 
 import { createVpc } from './vpc'
@@ -19,15 +19,17 @@ class MyStack extends TerraformStack {
       }
     });
 
-    new S3Backend(this, {
-      bucket: process.env.BACKEND_BUCKET!,
-      key: "sbox_cdktf.terraform.tfstate",
-      region: "ap-northeast-1",
-    });
+    const snPublicIds = new TerraformVariable(this, "sn_public_ids", { type: "list(string)" })
 
     const { vpc } = createVpc(this)
-    const { publicSubnets } = createSubnets(this, vpc.id)
-    createRoutes(this, vpc.id, publicSubnets.map(s => s.id))
+    createSubnets(this, vpc.id)
+    createRoutes(this, vpc.id, [
+      // FIXME: これ正しい方法がわからない
+      Fn.element(snPublicIds.listValue, 0),
+      Fn.element(snPublicIds.listValue, 1)
+    ])
+
+    new TerraformOutput(this, "vpc_id", { value: vpc.id })
   }
 }
 
