@@ -9,7 +9,7 @@ class MyStack extends TerraformStack {
 
     new LocalProvider(this, "local", {})
 
-    new File(this, "file1", {
+    new File(this, "file11", {
       filename: "file1.txt",
       content: "hello world",
     })
